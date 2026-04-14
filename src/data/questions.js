@@ -1,0 +1,122 @@
+export const ALL_QUESTIONS = {
+  "☕ Java": [
+      { q: "What does JVM stand for?", options: ["Java Virtual Machine", "Java Variable Memory", "Java Version Manager", "Just Variable Method"], a: 0 },
+      { q: "Which keyword is used to inherit a class in Java?", options: ["implements", "extends", "inherits", "super"], a: 1 },
+      { q: "What is the size of an int in Java?", options: ["8 bytes", "2 bytes", "4 bytes", "16 bytes"], a: 2 },
+      { q: "Which of these is NOT a Java primitive type?", options: ["boolean", "char", "String", "double"], a: 2 },
+      { q: "What does OOP stand for?", options: ["Object Oriented Programming", "Open Oriented Protocol", "Output Operated Process", "Object Output Print"], a: 0 },
+      { q: "Which method is the entry point of a Java program?", options: ["start()", "run()", "init()", "main()"], a: 3 },
+      { q: "Which data structure uses LIFO order?", options: ["Queue", "Stack", "LinkedList", "Array"], a: 1 },
+      { q: "What is used to handle exceptions in Java?", options: ["if-else", "try-catch", "switch-case", "for-loop"], a: 1 },
+      { q: "Which collection class allows duplicate elements?", options: ["HashSet", "TreeSet", "ArrayList", "HashMap"], a: 2 },
+      { q: "What is the default value of a boolean in Java?", options: ["true", "null", "false", "0"], a: 2 }
+  ],
+  "🌍 GK": [
+      { q: "What is the capital of France?", options: ["Berlin", "London", "Madrid", "Paris"], a: 3 },
+      { q: "Which planet is known as the Red Planet?", options: ["Mars", "Venus", "Jupiter", "Saturn"], a: 0 },
+      { q: "Who wrote 'Hamlet'?", options: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Leo Tolstoy"], a: 1 },
+      { q: "What is the largest ocean on Earth?", options: ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean", "Arctic Ocean"], a: 2 },
+      { q: "In which year did the Titanic sink?", options: ["1912", "1905", "1898", "1923"], a: 0 },
+      { q: "What is the chemical symbol for Gold?", options: ["Ag", "Au", "Pb", "Fe"], a: 1 },
+      { q: "Which country is known as the Land of the Rising Sun?", options: ["China", "South Korea", "Japan", "Thailand"], a: 2 },
+      { q: "How many continents are there on Earth?", options: ["5", "6", "7", "8"], a: 2 },
+      { q: "What is the hardest natural substance on Earth?", options: ["Gold", "Iron", "Diamond", "Quartz"], a: 2 },
+      { q: "Who painted the Mona Lisa?", options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"], a: 2 }
+  ],
+  "🧮 Math": [
+      { q: "What is 15 + 28?", options: ["41", "43", "45", "42"], a: 1 },
+      { q: "What is the square root of 144?", options: ["10", "11", "12", "14"], a: 2 },
+      { q: "What is 5 cubed?", options: ["125", "100", "25", "150"], a: 0 },
+      { q: "Solve for x: 2x - 6 = 10", options: ["6", "8", "4", "10"], a: 1 },
+      { q: "What is the value of Pi to two decimal places?", options: ["3.12", "3.14", "3.16", "3.18"], a: 1 },
+      { q: "What is 7 multiplied by 8?", options: ["54", "56", "58", "64"], a: 1 },
+      { q: "What is 100 divided by 4?", options: ["20", "25", "30", "50"], a: 1 },
+      { q: "How many degrees are in a full circle?", options: ["180", "90", "360", "270"], a: 2 },
+      { q: "What is the next prime number after 7?", options: ["9", "11", "13", "15"], a: 1 },
+      { q: "What is 10% of 250?", options: ["25", "50", "2.5", "10"], a: 0 }
+  ],
+  "🔬 Science": [
+      { q: "What is the chemical symbol for water?", options: ["H2O", "O2", "CO2", "HO"], a: 0 },
+      { q: "What planet is closest to the Sun?", options: ["Earth", "Mars", "Venus", "Mercury"], a: 3 },
+      { q: "How many bones are in the human body?", options: ["206", "306", "256", "216"], a: 0 },
+      { q: "At what temperature does water boil?", options: ["50°C", "90°C", "100°C", "120°C"], a: 2 },
+      { q: "Who developed the theory of relativity?", options: ["Isaac Newton", "Albert Einstein", "Nikola Tesla", "Galileo"], a: 1 },
+      { q: "What is the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Membrane"], a: 2 },
+      { q: "What gas do humans exhale?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"], a: 1 },
+      { q: "What is the center of an atom called?", options: ["Proton", "Electron", "Nucleus", "Neutron"], a: 2 },
+      { q: "Which is the largest organ in the human body?", options: ["Heart", "Liver", "Brain", "Skin"], a: 3 },
+      { q: "What is the hardest natural substance?", options: ["Iron", "Gold", "Diamond", "Quartz"], a: 2 }
+  ],
+  "📜 History": [
+      { q: "Who was the first President of the USA?", options: ["Abraham Lincoln", "George Washington", "Thomas Jefferson", "John Adams"], a: 1 },
+      { q: "In which year did WWII end?", options: ["1940", "1945", "1950", "1939"], a: 1 },
+      { q: "Who discovered America in 1492?", options: ["Vasco da Gama", "Marco Polo", "Christopher Columbus", "Ferdinand Magellan"], a: 2 },
+      { q: "Which ancient civilization built the Pyramids?", options: ["Romans", "Greeks", "Mayans", "Egyptians"], a: 3 },
+      { q: "Who was the first emperor of Rome?", options: ["Julius Caesar", "Augustus", "Nero", "Caligula"], a: 1 },
+      { q: "What was the name of the ship that sank in 1912?", options: ["Lusitania", "Titanic", "Britannic", "Olympic"], a: 1 },
+      { q: "Who was known as the Maid of Orleans?", options: ["Marie Antoinette", "Queen Elizabeth", "Joan of Arc", "Catherine the Great"], a: 2 },
+      { q: "The Cold War was primarily between the US and?", options: ["China", "Germany", "Soviet Union", "Japan"], a: 2 },
+      { q: "Who painted the ceiling of the Sistine Chapel?", options: ["Michelangelo", "Leonardo", "Raphael", "Donatello"], a: 0 },
+      { q: "Where was the UN founded?", options: ["New York", "Geneva", "London", "San Francisco"], a: 3 }
+  ],
+  "🗺️ Geography": [
+      { q: "What is the largest continent?", options: ["Africa", "Asia", "Europe", "North America"], a: 1 },
+      { q: "Which is the longest river in the world?", options: ["Amazon", "Nile", "Yangtze", "Mississippi"], a: 1 },
+      { q: "What is the capital of Australia?", options: ["Sydney", "Melbourne", "Canberra", "Brisbane"], a: 2 },
+      { q: "Mount Everest is located in which mountain range?", options: ["Alps", "Andes", "Rockies", "Himalayas"], a: 3 },
+      { q: "Which ocean is the smallest?", options: ["Arctic", "Indian", "Atlantic", "Pacific"], a: 0 },
+      { q: "What is the largest desert in the world?", options: ["Gobi", "Sahara", "Antarctica", "Kalahari"], a: 2 },
+      { q: "Which country has the most population?", options: ["India", "China", "USA", "Indonesia"], a: 0 },
+      { q: "What is the capital of Canada?", options: ["Toronto", "Vancouver", "Montreal", "Ottawa"], a: 3 },
+      { q: "Where is the Eiffel Tower located?", options: ["Berlin", "London", "Rome", "Paris"], a: 3 },
+      { q: "Which continent is also a country?", options: ["Africa", "Europe", "Australia", "Antarctica"], a: 2 }
+  ],
+  "🎬 Movies": [
+      { q: "Who directed 'Avatar'?", options: ["Steven Spielberg", "Christopher Nolan", "James Cameron", "George Lucas"], a: 2 },
+      { q: "Which movie features the quote 'I am your father'?", options: ["Star Trek", "Star Wars", "Matrix", "Lord of the Rings"], a: 1 },
+      { q: "Who played Jack in 'Titanic'?", options: ["Brad Pitt", "Tom Cruise", "Leonardo DiCaprio", "Johnny Depp"], a: 2 },
+      { q: "What is the highest-grossing film of all time?", options: ["Avengers: Endgame", "Avatar", "Titanic", "Star Wars"], a: 1 },
+      { q: "Which movie series features a wizard named Harry?", options: ["Chronicles of Narnia", "Percy Jackson", "Harry Potter", "Twilight"], a: 2 },
+      { q: "Who directed 'Jurassic Park'?", options: ["James Cameron", "Peter Jackson", "Steven Spielberg", "Ridley Scott"], a: 2 },
+      { q: "What colour is the pill Neo takes in 'The Matrix'?", options: ["Blue", "Green", "Red", "Yellow"], a: 2 },
+      { q: "Who plays Iron Man in the MCU?", options: ["Chris Evans", "Chris Hemsworth", "Robert Downey Jr.", "Mark Ruffalo"], a: 2 },
+      { q: "Which animated film features a clownfish named Nemo?", options: ["Shark Tale", "Finding Nemo", "Little Mermaid", "Moana"], a: 1 },
+      { q: "What is the name of the Hobbit played by Elijah Wood?", options: ["Sam", "Merry", "Pippin", "Frodo"], a: 3 }
+  ],
+  "⚽ Sports": [
+      { q: "How many players are on a football team on the field?", options: ["9", "10", "11", "12"], a: 2 },
+      { q: "Which country won the 2022 FIFA World Cup?", options: ["France", "Brazil", "Argentina", "Germany"], a: 2 },
+      { q: "In tennis, what is a score of zero called?", options: ["Nil", "Zero", "Nothing", "Love"], a: 3 },
+      { q: "How many rings make up the Olympic logo?", options: ["4", "5", "6", "7"], a: 1 },
+      { q: "What sport is known as America's pastime?", options: ["Basketball", "Soccer", "Baseball", "Tennis"], a: 2 },
+      { q: "Who is often called 'The Greatest' in boxing?", options: ["Mike Tyson", "Floyd Mayweather", "Muhammad Ali", "Joe Frazier"], a: 2 },
+      { q: "In basketball, how high is the hoop from the ground?", options: ["9 feet", "10 feet", "11 feet", "12 feet"], a: 1 },
+      { q: "Which country hosts the Wimbledon tennis tournament?", options: ["USA", "France", "Australia", "UK"], a: 3 },
+      { q: "How long is a marathon?", options: ["26.2 miles", "20 miles", "13.1 miles", "30 miles"], a: 0 },
+      { q: "What is the standard length of a football match?", options: ["60 mins", "90 mins", "120 mins", "45 mins"], a: 1 }
+  ],
+  "🎵 Music": [
+      { q: "Who is known as the King of Pop?", options: ["Elvis Presley", "Michael Jackson", "Prince", "Freddie Mercury"], a: 1 },
+      { q: "How many strings does a standard guitar have?", options: ["4", "5", "6", "7"], a: 2 },
+      { q: "Which band sang 'Hey Jude'?", options: ["The Rolling Stones", "The Who", "The Beatles", "Led Zeppelin"], a: 2 },
+      { q: "What is the best-selling album of all time?", options: ["Back in Black", "Thriller", "The Dark Side of the Moon", "Bat Out of Hell"], a: 1 },
+      { q: "Who sang 'Rolling in the Deep'?", options: ["Taylor Swift", "Beyonce", "Adele", "Rihanna"], a: 2 },
+      { q: "Which composer was deaf later in life?", options: ["Mozart", "Bach", "Beethoven", "Chopin"], a: 2 },
+      { q: "What genre of music is Bob Marley famous for?", options: ["Jazz", "Reggae", "Blues", "Rock"], a: 1 },
+      { q: "Which instrument has black and white keys?", options: ["Guitar", "Drums", "Violin", "Piano"], a: 3 },
+      { q: "Who is the 'Queen of Pop'?", options: ["Madonna", "Britney Spears", "Whitney Houston", "Mariah Carey"], a: 0 },
+      { q: "What is the name of Beyonce's fandom?", options: ["Swifties", "Beliebers", "Beyhive", "Barbz"], a: 2 }
+  ],
+  "💻 Tech": [
+      { q: "Who is the CEO of Tesla?", options: ["Jeff Bezos", "Elon Musk", "Bill Gates", "Mark Zuckerberg"], a: 1 },
+      { q: "What does CPU stand for?", options: ["Central Processing Unit", "Computer Personal Unit", "Central Processor Unit", "Computer Processing Unit"], a: 0 },
+      { q: "Which company created the iPhone?", options: ["Samsung", "Google", "Apple", "Microsoft"], a: 2 },
+      { q: "What does Wi-Fi stand for?", options: ["Wireless Fidelity", "Wireless Fire", "Wired Fiber", "It doesn't stand for anything"], a: 3 },
+      { q: "What year was Google founded?", options: ["1995", "1998", "2001", "2004"], a: 1 },
+      { q: "Which language is primarily used for Android apps?", options: ["Swift", "C#", "Java", "Ruby"], a: 2 },
+      { q: "What is the most popular operating system in the world?", options: ["macOS", "Linux", "Windows", "Android"], a: 3 },
+      { q: "What is the short name for malicious software?", options: ["Badware", "Malware", "Virus", "Trojan"], a: 1 },
+      { q: "Who invented the World Wide Web?", options: ["Steve Jobs", "Tim Berners-Lee", "Alan Turing", "Vint Cerf"], a: 1 },
+      { q: "What does HTML stand for?", options: ["Hyper Text Markup Language", "High Text Machine Language", "Hyper Tool Multi Language", "Hyperlinks Text Mark Language"], a: 0 }
+  ]
+};
