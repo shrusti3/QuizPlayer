@@ -17,15 +17,19 @@ export default function QuizScreen({ category, onComplete }) {
   const [showRain, setShowRain] = useState(false);
   const [lifelineUsed, setLifelineUsed] = useState(false);
   const [disabledOptions, setDisabledOptions] = useState([]); 
+  
+  // Streak System
+  const [streak, setStreak] = useState(0);
+  const [streakBadge, setStreakBadge] = useState(null);
 
   // Realistic SFX (Silenced per user request)
   const playSound = (type) => {
     // Audio engine muted currently
   };
 
-  const triggerConfetti = () => {
+  const triggerConfetti = (amount = 150) => {
     confetti({
-      particleCount: 150,
+      particleCount: amount,
       spread: 70,
       origin: { y: 0.6 },
       colors: ['#a855f7', '#06b6d4', '#ec4899', '#fce7f3']
@@ -41,7 +45,12 @@ export default function QuizScreen({ category, onComplete }) {
           setLoading(false);
         })
         .catch(err => {
-          setError(err.message);
+          console.warn("AI Error:", err);
+          let friendlyError = "The AI is currently out of credits or experiencing high demand. Please try again in a minute!";
+          if (err.message && (err.message.includes('Quota') || err.message.includes('429'))) {
+             friendlyError = "Free Tier Quota Exceeded! Please wait 60 seconds before generating another AI quiz.";
+          }
+          setError(friendlyError);
           setLoading(false);
         });
     } else {
@@ -86,20 +95,32 @@ export default function QuizScreen({ category, onComplete }) {
     if (idx !== -1) {
       if (isCorrect) {
         playSound('correct');
-        triggerConfetti();
         setScore(prev => prev + 1);
+        
+        const newStreak = streak + 1;
+        setStreak(newStreak);
+        
+        if (newStreak === 5 || newStreak === 10) {
+          setStreakBadge(newStreak);
+          triggerConfetti(300); // Massive confetti for streak
+          setTimeout(() => setStreakBadge(null), 3000);
+        } else {
+          triggerConfetti(50);
+        }
       } else {
         playSound('wrong');
+        setStreak(0); // Break streak
         setShowRain(true);
         setTimeout(() => setShowRain(false), 2000);
       }
+    } else {
+      setStreak(0); // Break streak on timeout
     }
   };
 
   const handleNext = () => {
-    const isCorrect = selectedIdx === q.a;
     if (currentQ + 1 >= questions.length) {
-      onComplete(score + (isCorrect ? 1 : 0), questions.length);
+      onComplete(score, questions.length);
     } else {
       setCurrentQ(prev => prev + 1);
       setSelectedIdx(null);
@@ -197,7 +218,7 @@ export default function QuizScreen({ category, onComplete }) {
 
         {selectedIdx !== null && (
           <div className="explanation-card glass-panel" style={{ marginTop: '1.5rem', animation: 'fadeInUp 0.5s ease', textAlign: 'left', padding: '1.5rem' }}>
-            <h3 style={{ color: selectedIdx === q.a ? '#10b981' : '#ef4444', marginBottom: '0.5rem' }}>
+            <h3 style={{ color: selectedIdx === q.a ? 'var(--opt-correct)' : 'var(--opt-wrong)', marginBottom: '0.5rem' }}>
               {selectedIdx === q.a ? '✅ Correct!' : '❌ Incorrect!'}
             </h3>
             {q.explanation && (
@@ -213,6 +234,20 @@ export default function QuizScreen({ category, onComplete }) {
       </div>
       
       {showRain && <RainEffect />}
+      
+      {streakBadge && (
+        <div style={{
+          position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+          background: 'var(--brand-primary)', color: 'white', padding: '2rem 4rem',
+          borderRadius: '30px', zIndex: 10000, textAlign: 'center',
+          boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+          animation: 'scaleUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        }}>
+          <div style={{ fontSize: '5rem', marginBottom: '1rem' }}>🔥</div>
+          <h2 style={{ fontSize: '3rem', margin: 0, fontFamily: 'Space Grotesk' }}>{streakBadge} IN A ROW!</h2>
+          <p style={{ fontSize: '1.2rem', marginTop: '1rem', opacity: 0.9 }}>Unstoppable!</p>
+        </div>
+      )}
     </>
   );
 }

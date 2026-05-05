@@ -100,7 +100,11 @@ export default function WelcomeScreen({ onStart }) {
     <>
       <div 
         className="spotify-dynamic-bg"
-        style={{ backgroundImage: `url('${activeQuiz.img}')` }} 
+        style={{ 
+          backgroundImage: `url('${activeQuiz.img}')`,
+          backgroundColor: activeQuiz.color,
+          backgroundBlendMode: 'overlay'
+        }} 
       />
 
       <div className="spotify-player-container">
@@ -115,7 +119,9 @@ export default function WelcomeScreen({ onStart }) {
           </button>
         </div>
 
-        <h1 className="spotify-title">Quiz Library</h1>
+        <div className="spotify-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem' }}>
+          <h1 className="y2k-logo">QUIZ CLUB</h1>
+        </div>
         
         {/* CAROUSEL VIEWPORT */}
         <div 
@@ -127,15 +133,37 @@ export default function WelcomeScreen({ onStart }) {
           onWheel={handleWheel}
           style={{ cursor: 'grab', userSelect: 'none' }}
         >
-          <div 
-            className="carousel-track" 
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-          >
-            {safeMetaData.map((quiz, i) => (
-              <div key={i} className="carousel-slide">
-                <div className="spotify-card glass-panel">
+          {safeMetaData.map((quiz, i) => {
+            const length = safeMetaData.length;
+            let offset = i - currentIndex;
+            
+            if (offset > length / 2) offset -= length;
+            if (offset < -length / 2) offset += length;
+            
+            const absOffset = Math.abs(offset);
+            const isActive = offset === 0;
+            
+            const translateX = offset * 160; 
+            const translateZ = -absOffset * 300; 
+            const rotateY = offset * -25; 
+            const scale = isActive ? 1 : 1 - absOffset * 0.05;
+            const opacity = absOffset > 2 ? 0 : 1 - absOffset * 0.4;
+            const zIndex = 100 - absOffset;
+            
+            return (
+              <div 
+                key={i} 
+                className="carousel-slide"
+                style={{
+                  transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
+                  opacity,
+                  zIndex,
+                  pointerEvents: isActive ? 'auto' : 'none',
+                }}
+              >
+                <div className="spotify-card">
                   <div className="album-art-wrap">
-                    <img src={quiz.img} alt={quiz.cat} className="album-art" />
+                    <img src={quiz.img} alt={quiz.cat} className="album-art" draggable="false" />
                   </div>
                   
                   <div className="album-info">
@@ -144,29 +172,17 @@ export default function WelcomeScreen({ onStart }) {
                   </div>
                   
                   <div className="spotify-controls">
-                    <button className="ctrl-btn secondary-btn" onClick={handlePrev} title="Previous">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-                    </button>
                     <button className="ctrl-btn play-btn" onClick={() => onStart(quiz.cat)} title="Play">
-                      <svg width="40" height="40" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <button className="ctrl-btn secondary-btn" onClick={handleNext} title="Next">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </button>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
-        <div className="track-scrubber">
-          <span className="time-text">0:00</span>
-          <div className="scrubber-bar">
-             <div className="scrubber-fill" style={{ width: `${(currentIndex / (safeMetaData.length - 1)) * 100}%` }}></div>
-          </div>
-          <span className="time-text">-15:00</span>
-        </div>
+        {/* Removed Track Scrubber as 3D visual takes over */}
 
         {/* AI CUSTOM QUIZ GENERATOR */}
         <div className="ai-generator-section glass-panel" style={{ marginTop: '2rem', padding: '1.5rem', borderRadius: '16px', textAlign: 'left' }}>
@@ -185,9 +201,9 @@ export default function WelcomeScreen({ onStart }) {
               onChange={(e) => setAiDifficulty(e.target.value)}
               style={{ padding: '0.8rem', borderRadius: '8px', border: 'none', backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', outline: 'none', cursor: 'pointer' }}
             >
-              <option value="Beginner" style={{ color: 'black' }}>Beginner</option>
-              <option value="Intermediate" style={{ color: 'black' }}>Intermediate</option>
-              <option value="Advanced" style={{ color: 'black' }}>Advanced</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
             </select>
             <button className="restart-btn" style={{ margin: 0, padding: '0.8rem 1.5rem' }} onClick={handleStartAI}>
               Generate & Play

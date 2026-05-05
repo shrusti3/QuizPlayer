@@ -30,7 +30,7 @@ Each object must have the exact following structure:
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-flash-lite-latest',
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
