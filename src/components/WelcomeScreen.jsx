@@ -30,6 +30,8 @@ export default function WelcomeScreen({ onStart }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
+  const [aiTopic, setAiTopic] = useState('');
+  const [aiDifficulty, setAiDifficulty] = useState('Intermediate');
 
   const activeQuiz = safeMetaData[currentIndex];
 
@@ -45,6 +47,14 @@ export default function WelcomeScreen({ onStart }) {
     navigator.clipboard.writeText("https://mega-quiz-app.com/invite/8a1b9X");
     alert("Invite Link copied to clipboard!");
     setShowInvite(false);
+  };
+
+  const handleStartAI = () => {
+    if (!aiTopic.trim()) {
+      alert("Please enter a topic for the AI to generate!");
+      return;
+    }
+    onStart({ isAI: true, topic: aiTopic, difficulty: aiDifficulty });
   };
 
   const touchStartX = useRef(null);
@@ -157,6 +167,34 @@ export default function WelcomeScreen({ onStart }) {
           </div>
           <span className="time-text">-15:00</span>
         </div>
+
+        {/* AI CUSTOM QUIZ GENERATOR */}
+        <div className="ai-generator-section glass-panel" style={{ marginTop: '2rem', padding: '1.5rem', borderRadius: '16px', textAlign: 'left' }}>
+          <h2 style={{ marginBottom: '1rem', color: 'var(--brand-cyan)' }}>✨ AI Custom Quiz</h2>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>Generate a unique 10-question quiz on any topic!</p>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <input 
+              type="text" 
+              placeholder="e.g. Java Streams, IPL History" 
+              value={aiTopic}
+              onChange={(e) => setAiTopic(e.target.value)}
+              style={{ flex: '1', padding: '0.8rem', borderRadius: '8px', border: 'none', backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', outline: 'none' }}
+            />
+            <select 
+              value={aiDifficulty}
+              onChange={(e) => setAiDifficulty(e.target.value)}
+              style={{ padding: '0.8rem', borderRadius: '8px', border: 'none', backgroundColor: 'rgba(255,255,255,0.1)', color: 'white', outline: 'none', cursor: 'pointer' }}
+            >
+              <option value="Beginner" style={{ color: 'black' }}>Beginner</option>
+              <option value="Intermediate" style={{ color: 'black' }}>Intermediate</option>
+              <option value="Advanced" style={{ color: 'black' }}>Advanced</option>
+            </select>
+            <button className="restart-btn" style={{ margin: 0, padding: '0.8rem 1.5rem' }} onClick={handleStartAI}>
+              Generate & Play
+            </button>
+          </div>
+        </div>
+
       </div>
 
       {/* POPUP MODALS */}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import RainEffect from './RainEffect';
 import { ALL_QUESTIONS } from '../data/questions';
+import { generateQuiz } from '../services/ai';
 
 export default function QuizScreen({ category, onComplete }) {
   const [questions, setQuestions] = useState([]);
@@ -9,6 +10,8 @@ export default function QuizScreen({ category, onComplete }) {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(15);
   const [selectedIdx, setSelectedIdx] = useState(null);
+  const [loading, setLoading] = useState(typeof category === 'object' && category.isAI);
+  const [error, setError] = useState(null);
   
   // Gamification overlays
   const [showRain, setShowRain] = useState(false);
@@ -30,14 +33,27 @@ export default function QuizScreen({ category, onComplete }) {
   };
 
   useEffect(() => {
-    const shuffled = [...ALL_QUESTIONS[category]].sort(() => Math.random() - 0.5);
-    setQuestions(shuffled);
+    if (typeof category === 'object' && category.isAI) {
+      setLoading(true);
+      generateQuiz(category.topic, category.difficulty)
+        .then(data => {
+          setQuestions(data);
+          setLoading(false);
+        })
+        .catch(err => {
+          setError(err.message);
+          setLoading(false);
+        });
+    } else {
+      const shuffled = [...ALL_QUESTIONS[category]].sort(() => Math.random() - 0.5);
+      setQuestions(shuffled);
+    }
   }, [category]);
 
   const q = questions[currentQ];
 
   useEffect(() => {
-    if (!q || selectedIdx !== null) return;
+    if (loading || error || !q || selectedIdx !== null) return;
     if (timeLeft <= 0) {
       playSound('wrong');
       setShowRain(true);
@@ -75,33 +91,56 @@ export default function QuizScreen({ category, onComplete }) {
       } else {
         playSound('wrong');
         setShowRain(true);
+        setTimeout(() => setShowRain(false), 2000);
       }
     }
-    
-    // Hold evaluation screen momentarily
-    setTimeout(() => {
-      setShowRain(false);
-      if (currentQ + 1 >= questions.length) {
-        onComplete(score + (isCorrect ? 1 : 0), questions.length);
-      } else {
-        setCurrentQ(prev => prev + 1);
-        setSelectedIdx(null);
-        setDisabledOptions([]); 
-        setTimeLeft(15);
-      }
-    }, 2000); // 2 second pause to appreciate the animation/boos
   };
+
+  const handleNext = () => {
+    const isCorrect = selectedIdx === q.a;
+    if (currentQ + 1 >= questions.length) {
+      onComplete(score + (isCorrect ? 1 : 0), questions.length);
+    } else {
+      setCurrentQ(prev => prev + 1);
+      setSelectedIdx(null);
+      setDisabledOptions([]); 
+      setTimeLeft(15);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="quiz-wrapper" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        <h2 style={{ color: 'var(--brand-cyan)' }}>🤖 AI is cooking your questions...</h2>
+        <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>Generating {category.difficulty} questions about {category.topic}</p>
+        <div className="spinner" style={{ marginTop: '2rem', width: '50px', height: '50px', border: '5px solid rgba(255,255,255,0.1)', borderTop: '5px solid var(--brand-cyan)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+        <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="quiz-wrapper" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', textAlign: 'center' }}>
+        <h2 style={{ color: 'var(--timer-warn)' }}>⚠️ Error Generating Quiz</h2>
+        <p style={{ color: 'var(--text-muted)', marginTop: '1rem', maxWidth: '400px' }}>{error}</p>
+        <button className="restart-btn" style={{ marginTop: '2rem' }} onClick={() => window.location.reload()}>Go Back</button>
+      </div>
+    );
+  }
 
   if (!q) return null;
 
   const progPct = (timeLeft / 15) * 100;
   const barColor = timeLeft <= 5 ? 'var(--timer-warn)' : 'var(--brand-cyan)';
+  
+  const displayCategory = typeof category === 'object' ? `${category.topic} (AI)` : category;
 
   return (
     <>
       <div className="quiz-wrapper">
         <div className="quiz-header">
-          <div className="category-badge scale-up">{category}</div>
+          <div className="category-badge scale-up">{displayCategory}</div>
           
           <button 
             className={`lifeline-btn ${lifelineUsed ? 'used' : ''}`}
@@ -155,6 +194,22 @@ export default function QuizScreen({ category, onComplete }) {
             );
           })}
         </div>
+
+        {selectedIdx !== null && (
+          <div className="explanation-card glass-panel" style={{ marginTop: '1.5rem', animation: 'fadeInUp 0.5s ease', textAlign: 'left', padding: '1.5rem' }}>
+            <h3 style={{ color: selectedIdx === q.a ? '#10b981' : '#ef4444', marginBottom: '0.5rem' }}>
+              {selectedIdx === q.a ? '✅ Correct!' : '❌ Incorrect!'}
+            </h3>
+            {q.explanation && (
+              <p style={{ color: 'var(--text-main)', marginBottom: '1.5rem', lineHeight: '1.5' }}>
+                <strong style={{ color: 'var(--brand-cyan)' }}>Explanation:</strong> {q.explanation}
+              </p>
+            )}
+            <button className="restart-btn" style={{ width: '100%', margin: 0 }} onClick={handleNext}>
+              {currentQ + 1 >= questions.length ? 'See Results' : 'Next Question ➡️'}
+            </button>
+          </div>
+        )}
       </div>
       
       {showRain && <RainEffect />}
